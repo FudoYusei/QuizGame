@@ -41,7 +41,7 @@ syntax_highlighter_style: colorful
 markdown_ext:             markdown,mkdown,mkdn,mkd,md
 
 # Permalinks
-permalink:                /:categories/:year-:month-:day-:title:output_ext
+permalink:                /post/:categories/:year-:month-:day-:title:output_ext
 
 # Disqus comments
 # disqushandler:            sighingnow
@@ -49,18 +49,23 @@ permalink:                /:categories/:year-:month-:day-:title:output_ext
 exclude:
   - _drafts
 
+
 collections:
-  pages:
+   overviews:
+     output: true
+     permalink: /:collection/:categories/:year-:month-:day-:title:output_ext
+     sort_by: lesson
+     reverse: true
+   editors:
     output: true
-    permalink: /:collection/:path/
-  others:
-    output: true
-    permalink: /:collection/:path/
+    permalink: /:collection/:categories/:year-:month-:day-:title:output_ext
+    reverse: true
 
 ordered_collections:
-  - posts
-  - pages
-  - others
+   - overviews
+   - posts
+   - editors
+
 
 page_width: 800px
 

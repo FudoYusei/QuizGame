@@ -1,235 +1,110 @@
 ---
 layout: home
-title: Jekyll Gitbook Theme
+title: QuizGame
 permalink: /
 ---
 
 Make Jelly site have a GitBook look!
 
-## Demo
+Demo
+------------------
 
-Live demo on Github Pages: [https://sighingnow.github.io/jekyll-gitbook](https://sighingnow.github.io/jekyll-gitbook)
+演示视频: [链接地址]()
 
-[![Jekyll Themes](https://img.shields.io/badge/featured%20on-JekyllThemes-red.svg)](https://jekyll-themes.com/jekyll-gitbook/)
+项目地址: [https://jekyll-themes.com/jekyll-gitbook/](https://jekyll-themes.com/jekyll-gitbook/)
 
-## Why Jekyll with GitBook
+项目背景介绍
+-----------------
 
-GitBook is an amazing frontend style to present and organize contents (such as book chapters
-and blogs) on Web. The typical to deploy GitBook at [Github Pages][1]
-is building HTML files locally and then push to Github repository, usually to the `gh-pages`
-branch. It's quite annoying to repeat such workload and make it hard for people do version
-control via git for when there are generated HTML files to be staged in and out.
+使用 Unity UI Toolkit 创建基于UI的问答游戏, 本身就是官方的 UI Toolkit 教学项目.  
+UI Toolkit 是Unity官方最新推出的UI工具链, 拥有原生的可视化编辑器支持. 并且开发流程类似于web, 元素和样式分离. 比起uGUI耦合性更低, 灵活性更强, 适用于复杂的UI逻辑.  
 
-This theme takes style definition out of generated GitBook site and provided the template
-for Jekyll to rendering markdown documents to HTML, thus the whole site can be deployed
-to [Github Pages][1] without generating and uploading HTML bundle every time when there are
-changes to the original repo.
+> #### Tip
+> 
+> 因为该项目是教学实例, 因此内部充斥着不同风格的代码架构, 后面会逐一进行解释  
+{: .block-tip}  
 
-## How to Get Started
+How to Get Started
+--------------------  
+本项目使用 Unity 2023.2.12f1c1, 直接在 Asset Store 中搜索 UIToolkit, 导入项目即可  
 
-This theme can be used just as other [Jekyll themes][1] and support [remote theme][12],
-see [the official guide][13] as well.
+#### ReadMe
 
-You can introduce this jekyll theme into your own site by either
+每次在 Unity Editor 中打开项目会自动加载预设 window layout, 并且在右侧边栏显示 ReadMe 中的信息.  
+阅读 ReadMe 中关于项目的介绍, 可以获得对项目的初步理解  
 
-- [Fork][3] this repository and add your markdown posts to the `_posts` folder.
-- Use as a remote theme in your [`_config.yml`][14](just like what we do for this
-  site itself),
+#### 从场景运行
 
-```yaml
-remote_theme: sighingnow/jekyll-gitbook
-```
+首次在 Unity Editor 中首次打开项目会自动定位到 Boot 场景.  
+项目默认点击 Play 按钮, 都会从 Boot 场景开始运行, 模拟实际运行环境.  
 
-### Deploy Locally with Jekyll Serve
+想要在 Editor 中自由的选择运行场景, 点击上方菜单栏 Quiz-> DontLoadBootOnPlay  
 
-This theme can be ran locally using Ruby and Gemfiles.
+Key Features
+--------------------  
+#### 基于事件系统的架构
+静态事件类, 例如 GameEvents, UIEvents. 促进系统间的交流, 易于测试和维护  
 
-[Testing your GitHub Pages site locally with Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll) - GitHub
+#### Design Patterns
+几个核心设计模式: 包括 state pattern 和 model-view-presenter  
 
-## Full-text search
+#### UI Toolkit
+作为一个 UI 驱动的游戏, 示例中, UI Toolkit 用于所有界面, 演示实际用法. 
 
-The search functionality in jekyll-gitbook theme is powered by the [gitbook-plugin-search-pro][5] plugin and is enabled by default.
+Demos
+--------------------
+独立场景展示 UI Toolkit 的特性.  
 
-[https://sighingnow.github.io/jekyll-gitbook/?q=generated](https://sighingnow.github.io/jekyll-gitbook/?q=generated)
++ UXML and Visual Tree: UI Builder可视化界面中编辑的 Visual Tree, 会被转换成对应层级结构的 UXML 文件
++ Flexbox: Flexibal Box Layout Model 提供了高效的布局模型
++ UnityStyleSheets(USS): 类似web开发的css文件, 自定义样式可以重复使用, 并且可以简单的替换.
++ UQuery: 简化了在复杂层级结构中定位特定 UI Elment 的方式, 可以在 visual tree 中无缝导航特定的 UI 组件
++ Pseudo-classes: 伪类, 可以用最少的代码创建交互和动画.
++ UI Toolkit Event System: UI Toolkit 有着自身完整的事件系统
++ Manipulators: 将相关的事件抽象出来到一个单独的类中.(例如, 道具系统中的点击拖拽行为, 由mousedown mousemove mouseup三个事件组成, 并且需要维护行为产生的状态)
++ Custom Controls: 自定义 UI 控件  
 
-## Code highlight
+QuizU Game
+--------------------
 
-The code highlight style is configurable the following entry in `_config.yaml`:
+命名约定
+------------------
+类名称后缀的命名规范, 细则如下:  
 
-```yaml
-syntax_highlighter_style: colorful
-```
+#### Manager  
+这个类处理游戏级别或者全局问题. 管理对象或者服务的生命周期, 并不是特定的 UI Screen. (例如, AudioManager, SequenceManager)  
 
-The default code highlight style is `colorful`, the full supported styles can be found from [the rouge repository][6]. Customized
-style can be added to [./assets/gitbook/rouge/](./assets/gitbook/rouge/).
+#### Controller
+通常作为一个系统的驱动中心, 控制系统流程运转. 例如 GameController   
 
-## How to generate TOC
+#### Presenter
+这个类是 MVP 设计模式的中间层控制器, 这个隔离 data 接口(e.g LevelSelectionPresenter 调用 ScriptableObject data(Model层) 更新 levelSelectionScreen(View层))  
 
-The jekyll-gitbook theme leverages [jekyll-toc][4] to generate the *Contents* for the page.
-The TOC feature is not enabled by default. To use the TOC feature, modify the TOC
-configuration in `_config.yml`:
+#### Screen
+Screen 类作为一个独立 UI 的显示代码 --作为模态屏幕, 继承自 UIScreen 基类.   
+因为, UI 采用栈式结构来实现菜单基础的前进后退功能, 所以每次只有一个 UIScreen 类处于激活状态.  
 
-```yaml
-toc:
-    enabled: true
-    h_min: 1
-    h_max: 3
-```
+每次开启一个新的 UIScreen 时, 会将当前 UI 对象入栈, 触发 ScreenClosed 事件时, 会出栈栈顶 UIScreen 对象并显示.  
 
-## Google Analytics, etc.
+#### Display
+有些 UIScreen 的页面逻辑比较复杂, 因此将 UIScreen 拆分成小块的 Display 逻辑.  
 
-The jekyll-gitboook theme supports embedding the [Google Analytics][7], [CNZZ][8] and [Application Insights][9] website analytical tools with the following
-minimal configuration in `_config.yaml`:
+#### ScriptableObjects
+ScriptableObject 类型的 C# 脚本使用 SO 后缀.  
+ScriptableObject 类型的资源使用 _Data 后缀.  
 
-```yaml
-tracker:
-  google_analytics: "<YOUR GOOGLE ANALYTICS KEY, e.g, UA-xxxxxx-x>"
-```
+ScriptTemplates
+------------------------  
+ScriptTemplates 文件夹下放置的时 MonoBehaviour 模板文件, 需要替换 Unity 内置的模板文件  
 
-Similarly, CNZZ can be added with the following configuration in `_config.yaml`
+StyleGuide
+----------------------  
+Unity 官方推荐的 C# 编程规范  
 
-```yaml
-tracker:
-  cnzz: "<YOUR CNZZ ANALYTICS KEY, e.g., xxxxxxxx>"
-```
+UI Toolkit Documention
+-----------------------  
+UI Toolkit 是 resources features tools 的集合. Unity 开发者可以使用它来创建自定义的 UI 和 Unity Editor 扩展.  
+它能够用来开发运行时调试工具以及游戏和应用程序的 UI. UI Toolkit 的灵感来自于 web 技术, 因此 web 开发者会发现核心概念很熟悉.  
 
-Application Insights can be added with the following configuration in `_config.yaml`
-
-```yaml
-tracker:
-  application_insights: "<YOUR APPLICATION INSIGHTS CONNECTION STRING>"
-```
-
-## Disqus comments
-
-[Disqus](https://disqus.com/) comments can be enabled by adding the following configuration in `_config.yaml`:
-
-```yaml
-disqushandler: "<YOUR DISQUS SHORTNAME>"
-```
-
-## Jekyll collections
-
-Jekyll's [collections][15] is supported to organize the pages in a more fine-grained manner, e.g.,
-
-```yaml
-collections:
-  pages:
-    output: true
-    sort_by: date
-    permalink: /:collection/:year-:month-:day-:title:output_ext
-  others:
-    output: true
-    sort_by: date
-    permalink: /:collection/:year-:month-:day-:title:output_ext
-```
-
-An optional `ordered_collections` key can be added to `_config.yaml` to control the order of collections in the sidebar:
-
-```yaml
-ordered_collections:
-  - posts
-  - pages
-  - others
-```
-
-If not specified, the order of collections would be decided by Jekyll. Note that the key `posts` is a special collection
-that indicates the `_posts` pages of Jekyll.
-
-## Extra StyleSheet or Javascript elements
-
-You can add extra CSS or JavaScript references using configuration collections:
-
-- extra_css: for additional style sheets. If the url does not start by http, the path must be relative to the root of the site, without a starting `/`.
-- extra_header_js: for additional scripts to be included in the `<head>` tag, after the `extra_css` has been added. If the url does not start by http, the path must be relative to the root of the site, without a starting `/`.
-- extra_footer_js: for additional scripts to be included at the end of the HTML document, just before the site tracking script. If the url does not start by http, the path must be relative to the root of the site, without a starting `/`.
-
-## Customizing font settings
-
-The fonts can be customized by modifying the `.book.font-family-0` and `.book.font-family-1` entry in [`./assets/gitbook/custom.css`][10],
-
-```css
-.book.font-family-0 {
-    font-family: Georgia, serif;
-}
-.book.font-family-1 {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-```
-
-## Tips, Warnings and Dangers blocks
-
-The jekyll-gitbook theme supports customized kramdown attributes (`{: .block-tip }`, `{: .block-warning }`,
-`{: .block-danger }`) like that displayed in [the discord.js website][11]. The marker can be used like
-
-```markdown
-> ##### TIP
->
-> This guide is last tested with @napi-rs/canvas^0.1.20, so make sure you have
-> this or a similar version after installation.
-{: .block-tip }
-```
-
-Rendered page can be previewed from
-
-[https://sighingnow.github.io/jekyll-gitbook/jekyll/2022-06-30-tips_warnings_dangers.html](https://sighingnow.github.io/jekyll-gitbook/jekyll/2022-06-30-tips_warnings_dangers.html)
-
-## Cover image inside pages
-
-The jekyll-gitbook theme supports adding a cover image to a specific page by adding
-a `cover` field to the page metadata:
-
-```diff
-  ---
-  title: Page with cover image
-  author: Tao He
-  date: 2022-05-24
-  category: Jekyll
-  layout: post
-+ cover: /assets/jekyll-gitbook/dinosaur.gif
-  ---
-```
-
-The effect can be previewed from
-
-[https://sighingnow.github.io/jekyll-gitbook/jekyll/2022-05-24-page_cover.html](https://sighingnow.github.io/jekyll-gitbook/jekyll/2022-05-24-page_cover.html)
-
-## Diagrams with mermaid.js
-
-This jekyll-theme supports [mermaid.js](https://mermaid.js.org/) to render diagrams
-in markdown.
-
-To enable the mermaid support, you need to set `mermaid: true` in the front matter
-of your post.
-
-```markdown
----
-mermaid: true
----
-```
-
-The example can be previewed from
-
-[https://sighingnow.github.io/jekyll-gitbook/jekyll/2023-08-31-mermaid.html](https://sighingnow.github.io/jekyll-gitbook/jekyll/2023-08-31-mermaid.html)
-
-## License
-
-This work is open sourced under the Apache License, Version 2.0.
-
-Copyright 2019 Tao He.
 
 [1]: https://pages.github.com
-[2]: https://pages.github.com/themes
-[3]: https://github.com/sighingnow/jekyll-gitbook/fork
-[4]: https://github.com/allejo/jekyll-toc
-[5]: https://github.com/gitbook-plugins/gitbook-plugin-search-pro
-[6]: https://github.com/rouge-ruby/rouge/tree/master/lib/rouge/themes
-[7]: https://analytics.google.com/analytics/web/
-[8]: https://www.cnzz.com/
-[9]: https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview
-[10]: https://github.com/sighingnow/jekyll-gitbook/blob/master/gitbook/custom.css
-[11]: https://discordjs.guide/popular-topics/canvas.html#setting-up-napi-rs-canvas
-[12]: https://rubygems.org/gems/jekyll-remote-theme
-[13]: https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/adding-a-theme-to-your-github-pages-site-using-jekyll
-[14]: https://github.com/sighingnow/jekyll-gitbook/blob/master/_config.yml
-[15]: https://jekyllrb.com/docs/collections/
